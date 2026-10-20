@@ -9,21 +9,13 @@ export default function ProfilePage({ user, onLogout }) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      // Check localStorage
-      const saved = localStorage.getItem('codecraft_user');
-      if (!saved) {
-        navigate('/auth');
-      } else {
-        const parsed = JSON.parse(saved);
-        setProfileData(parsed);
-        fetchBackendProfile(parsed.email || parsed.id);
-      }
-    } else {
+    // PrivateRoute already guarantees `user` is present when this page renders.
+    // Just sync profileData and fetch the latest from the backend.
+    if (user) {
       setProfileData(user);
       fetchBackendProfile(user.email || user.id);
     }
-  }, [user, navigate]);
+  }, [user]);
 
   const fetchBackendProfile = async (identifier) => {
     if (!identifier) return;
@@ -42,22 +34,23 @@ export default function ProfilePage({ user, onLogout }) {
 
   const handleLogout = () => {
     if (onLogout) onLogout();
-    navigate('/auth');
+    navigate('/login');
   };
 
   if (!profileData) {
     return (
       <div className="container" style={{ padding: '60px 0', textAlign: 'center' }}>
-        <p style={{ color: 'var(--text-muted)' }}>Redirecting to sign-in...</p>
+        <p style={{ color: 'var(--text-muted)' }}>Loading profile...</p>
       </div>
     );
   }
+
 
   return (
     <div className="container" style={{ maxWidth: '800px', padding: '50px 20px' }}>
       <div className="glass-panel" style={{ padding: '36px' }}>
         {/* Profile Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '24px', marginBottom: '28px' }}>
+        <div className="profile-header-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '24px', marginBottom: '28px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', fontWeight: 800, color: 'white', boxShadow: '0 0 20px rgba(99, 102, 241, 0.4)' }}>
               {profileData.name ? profileData.name.charAt(0).toUpperCase() : 'U'}
@@ -75,7 +68,7 @@ export default function ProfilePage({ user, onLogout }) {
         </div>
 
         {/* Profile Info Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+        <div className="profile-info-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '32px' }}>
           <div style={{ background: 'rgba(0, 0, 0, 0.3)', padding: '16px 20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--accent-primary)', marginBottom: '8px' }}>
               <Mail size={18} />
@@ -102,7 +95,7 @@ export default function ProfilePage({ user, onLogout }) {
         </div>
 
         {/* Actions */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(99, 102, 241, 0.1)', border: '1px solid rgba(99, 102, 241, 0.25)', padding: '20px 24px', borderRadius: 'var(--radius-md)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '16px', background: 'rgba(99, 102, 241, 0.1)', border: '1px solid rgba(99, 102, 241, 0.25)', padding: 'clamp(14px, 3vw, 20px) clamp(16px, 3vw, 24px)', borderRadius: 'var(--radius-md)' }}>
           <div>
             <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '4px' }}>Ready to write code?</h4>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>

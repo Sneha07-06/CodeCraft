@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
-const DB = process.env.DATABASE || 'mongodb://127.0.0.1:27017/codecraft';
+const DB =
+  process.env.DATABASE ||
+  process.env.MONGODB_URI ||
+  process.env.MONGO_URI ||
+  'mongodb://127.0.0.1:27017/codecraft';
 
 const connectDB = async () => {
   try {

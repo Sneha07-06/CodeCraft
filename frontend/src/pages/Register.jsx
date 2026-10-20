@@ -38,7 +38,7 @@ export default function Register() {
       return;
     }
 
-    if (formData.password.length < 6) {
+    if (!formData.password || formData.password.length < 6) {
       showToast('error', 'Password must be at least 6 characters long');
       return;
     }
@@ -105,7 +105,7 @@ export default function Register() {
         </div>
       )}
 
-      <div className="glass-panel" style={{ width: '100%', maxWidth: '520px', padding: '36px 32px' }}>
+      <div className="glass-panel" style={{ width: '100%', maxWidth: '520px', padding: 'clamp(24px, 6vw, 36px) clamp(18px, 5vw, 32px)' }}>
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div
             style={{
@@ -169,7 +169,7 @@ export default function Register() {
           </div>
 
           {/* Phone & Profession 2-Column Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label" htmlFor="register-phone">Phone Number</label>
               <div style={{ position: 'relative' }}>

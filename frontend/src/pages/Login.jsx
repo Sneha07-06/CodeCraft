@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { LogIn, Mail, Lock, AlertCircle, CheckCircle2, ArrowRight, X, Sparkles } from 'lucide-react';
 
 export default function Login({ onLoginSuccess }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  // Where to send the user after login: the page they tried to visit, else /editor
+  const from = location.state?.from?.pathname || '/editor';
 
   const [formData, setFormData] = useState({
     email: '',
@@ -56,9 +59,9 @@ export default function Login({ onLoginSuccess }) {
 
       showToast('success', response.data.message || 'User Signin Successfully');
 
-      // Redirect user directly to the Code Editor workspace
+      // Redirect user to intended destination (or /editor as fallback)
       setTimeout(() => {
-        navigate('/editor');
+        navigate(from, { replace: true });
       }, 900);
     } catch (err) {
       const errorMsg =
@@ -107,7 +110,7 @@ export default function Login({ onLoginSuccess }) {
       )}
 
       {/* Clean Card UI */}
-      <div className="glass-panel" style={{ width: '100%', maxWidth: '440px', padding: '40px 32px' }}>
+      <div className="glass-panel" style={{ width: '100%', maxWidth: '440px', padding: 'clamp(24px, 6vw, 40px) clamp(18px, 5vw, 32px)' }}>
         <div style={{ textAlign: 'center', marginBottom: '30px' }}>
           <div
             style={{

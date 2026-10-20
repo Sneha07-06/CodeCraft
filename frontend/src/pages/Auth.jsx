@@ -53,6 +53,10 @@ export default function AuthPage({ onLoginSuccess }) {
     setError('');
     setSuccess('');
 
+    if (!registerData.password || registerData.password.length < 6) {
+      return setError('Password must be at least 6 characters long');
+    }
+
     if (registerData.password !== registerData.cpassword) {
       return setError('Passwords do not match');
     }

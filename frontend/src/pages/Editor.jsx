@@ -637,7 +637,10 @@ export default function EditorPage() {
     }
 
     // Fallback if cursor position is not available
-    setCode((prev) => prev + (prev.endsWith('\n') || prev.length === 0 ? '' : ' ') + formattedText);
+    setCode((prev) => {
+      const current = prev || '';
+      return current + (current.endsWith('\n') || current.length === 0 ? '' : ' ') + formattedText;
+    });
   };
 
   const handleCopy = () => {

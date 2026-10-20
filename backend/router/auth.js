@@ -94,6 +94,13 @@ router.post(['/signin', '/login'], async (req, res) => {
     return res.status(200).json({
       message: 'User Signin Successfully',
       token,
+      user: {
+        _id: userLogin._id,
+        name: userLogin.name,
+        email: userLogin.email,
+        phone: userLogin.phone,
+        work: userLogin.work,
+      },
     });
   } catch (err) {
     console.error('[Signin Error]:', err);

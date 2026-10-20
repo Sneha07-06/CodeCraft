@@ -9,14 +9,13 @@ dist/
 frontend/dist/
 .vite/
 
-# Environment configuration & sensitive secrets
+# Environment configuration
 config.env
 backend/config.env
-*.env
 .env
-.env.*
 .env.local
 .env.*.local
+*.env
 
 # Ephemeral code scripts and captured execution results
 codes/
